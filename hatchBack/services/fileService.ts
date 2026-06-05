@@ -6,11 +6,12 @@ export const createFile = async (
 	username: string,
 	filename: string,
 	folder_id: string,
+	mime_type: string,
 ) => {
 	const id = await getUserId(username);
 	const text =
-		"INSERT INTO files (user_id, file_name, folder_id) VALUES ($1, $2, $3)";
-	const values = [id, filename, folder_id];
+		"INSERT INTO files (user_id, file_name, folder_id, mime_type) VALUES ($1, $2, $3, $4)";
+	const values = [id, filename, folder_id, mime_type];
 
 	const fileDuplicate = await client.query(
 		"SELECT * FROM files WHERE file_name = $1 AND user_id = $2 AND folder_id = $3",
@@ -21,7 +22,7 @@ export const createFile = async (
 	}
 	await client!.query(text, values);
 	const createdFile = await client!.query(
-		"SELECT * FROM files WHERE user_id = $1 AND file_name = $2 AND folder_id = $3",
+		"SELECT * FROM files WHERE user_id = $1 AND file_name = $2 AND folder_id = $3 AND mime_type = $4",
 		values,
 	);
 	return createdFile.rows[0];

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../store/authStore";
-
+import fileExtensionsToMime from "../json/extension_to_mime.json";
 type file = {
 	file_name: string;
 	id: string;
@@ -12,6 +12,7 @@ type folder = {
 	folder_name: string;
 	parent_folder_id: string;
 };
+type fileExtMime = keyof typeof fileExtensionsToMime;
 
 export const About = () => {
 	const [fileData, setFileData] = useState<file[]>([]);
@@ -19,6 +20,8 @@ export const About = () => {
 	const [filesFolderName, setFileFoldersName] = useState("");
 	const [folderData, setFolderData] = useState<folder[]>([]);
 	const [folderName, setFolderName] = useState<string>("");
+	const [statusMessage, setStatusMessage] = useState<string>("");
+	const [file, setFile] = useState<File | null>(null);
 
 	const authorizedUser = useAuth((state) => state.auth);
 
@@ -38,23 +41,48 @@ export const About = () => {
 		return result;
 	};
 
+	const getMimeType = (file: fileExtMime) => {
+		return fileExtensionsToMime[file];
+	};
+
 	const handleFileSubmit = async (e: React.SubmitEvent) => {
 		e.preventDefault();
-		const data = { authorizedUser, fileName, folderName: filesFolderName };
+		const fileExt = fileName.slice(fileName.lastIndexOf("."));
+		const fileMime = Object.hasOwn(fileExtensionsToMime, fileExt);
+		const mimeType = getMimeType(fileExt as fileExtMime);
+		console.log("mimeType :", mimeType);
+		if (!fileMime) {
+			setStatusMessage("invalid file extension, example: .mp4");
+			setTimeout(() => setStatusMessage(""), 5000);
+			return;
+		}
+
+		const formData = new FormData();
+
+		formData.append("file_name", fileName);
+		if (authorizedUser) {
+			formData.append("authorizedUser", authorizedUser);
+		}
+		formData.append("folderName", filesFolderName);
+		formData.append("mimeType", mimeType);
+		if (file) {
+			formData.append("file", file);
+		}
+
 		const response = await fetch("http://localhost:3000/files", {
 			method: "POST",
 			credentials: "include",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(data),
+			body: formData,
 		});
+
 		const result = await response.json();
 
 		setFileName("");
 		setFileFoldersName("");
-		setFileData((prev) => [...prev, result.file]);
-		console.log("result.file from submit: ", result.file);
+		if (response.ok) {
+			setFileData((prev) => [...prev, result.file]);
+		}
+		console.log("result.file from submit: ", result, result.file);
 		return result;
 	};
 
@@ -70,7 +98,9 @@ export const About = () => {
 		const result = await response.json();
 		setFolderName("");
 		console.log("result.folde from submit: ", result.folder);
-		setFolderData((prev) => [...prev, result.folder]);
+		if (response.ok) {
+			setFolderData((prev) => [...prev, result.folder]);
+		}
 		return result;
 	};
 
@@ -116,6 +146,13 @@ export const About = () => {
 			<br />
 			<form className="" onSubmit={handleFileSubmit}>
 				<input
+					type="file"
+					onChange={(e) => {
+						const selected = e.target.files?.[0] || null;
+						setFile(selected);
+					}}
+				/>
+				<input
 					placeholder="file name"
 					value={fileName}
 					onChange={(e) => setFileName(e.target.value)}></input>
@@ -136,6 +173,7 @@ export const About = () => {
 					submit
 				</button>
 			</form>
+			<p>{statusMessage}</p>
 			<br />
 			{authorizedUser &&
 				folderData.map((folder) => {

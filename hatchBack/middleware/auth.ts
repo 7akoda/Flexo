@@ -8,6 +8,7 @@ declare global {
 		}
 	}
 }
+
 export const auth = (req: Request, res: Response, next: () => void) => {
 	const token = req.cookies.token;
 

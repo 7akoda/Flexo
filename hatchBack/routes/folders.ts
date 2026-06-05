@@ -6,6 +6,7 @@ import {
 	checkFolderDupe,
 	createFolder,
 	deleteFolder,
+	getFolderId,
 } from "../services/folderService.ts";
 import type { Request, Response } from "express";
 export const folderRouter = Router();
@@ -23,7 +24,8 @@ folderRouter.get("/", auth, async (req, res) => {
 folderRouter.post("/", auth, async (req, res) => {
 	const { authorizedUser, folderName } = req.body;
 	console.log(req.body);
-	if (await checkFolderDupe(authorizedUser, folderName, authorizedUser)) {
+	const folderId = await getFolderId("root");
+	if (await checkFolderDupe(authorizedUser, folderName, folderId)) {
 		return res
 			.status(401)
 			.json({ message: "please name the folder something unique" });

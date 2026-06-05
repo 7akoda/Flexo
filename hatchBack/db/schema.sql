@@ -5,6 +5,7 @@ CREATE TABLE files (
     folder_id UUID,
     FOREIGN KEY (folder_id) REFERENCES folders(folder_id) ON DELETE CASCADE,
     file_name TEXT NOT NULL,
+    mime_type TEXT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     CONSTRAINT unique_file_identity UNIQUE NULLS NOT DISTINCT (user_id, folder_id, file_name)
   );
