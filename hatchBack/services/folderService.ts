@@ -18,21 +18,19 @@ export const createFolder = async (
 	const id = await getUserId(username);
 	const parent_folder_id = await getFolderId(parent_folder_name);
 	const text =
-		"INSERT INTO folders ( user_id, folder_name, parent_folder_id) VALUES ($1, $2, $3)";
+		"INSERT INTO folders ( user_id, folder_name, parent_folder_id) VALUES ($1, $2, $3) RETURNING *";
 	const values = [id, folder_name, parent_folder_id];
-	const fileDuplicate = await client.query(
-		"SELECT * FROM folders WHERE folder_name = $1 AND user_id = $2",
-		[folder_name, id],
-	);
-	if (fileDuplicate.rows.length > 0) {
-		return "File already exists with this name.";
-	}
-	await client!.query(text, values);
 
-	const createdFolder = await client.query(
-		"SELECT * FROM folders WHERE folder_name = $1 AND user_id = $2",
-		[folder_name, id],
-	);
+	if (folder_name.length == 0) {
+		throw new Error("UNNAMED_FOLDER");
+	}
+
+	if (await checkFolderDupe(username, folder_name, parent_folder_id)) {
+		throw new Error("FOLDER_DUPLICATE");
+	}
+
+	const createdFolder = await client!.query(text, values);
+
 	return createdFolder.rows[0];
 };
 
@@ -54,15 +52,24 @@ export const deleteFolder = async (
 	const folder_id = await getFolderId(folder_name);
 	const parent_folder_id = await getFolderId(parent_folder_name);
 	if (!parent_folder_id) {
-		await client!.query(
-			"DELETE FROM folders WHERE user_id = $1 AND folder_id = $2",
+		const deletedFolder = await client!.query(
+			"DELETE FROM folders WHERE user_id = $1 AND folder_id = $2 RETURNING *",
 			[id, folder_id],
 		);
+		if (deletedFolder.rows.length == 0) {
+			throw new Error("FOLDER_NOT_FOUND");
+		}
+		return deletedFolder.rows[0];
 	}
-	await client!.query(
+	const deletedFolder = await client!.query(
 		"DELETE FROM folders WHERE parent_folder_id = $1 AND user_id = $2 AND folder_id = $3",
 		[parent_folder_id, id, folder_id],
 	);
+
+	if (deletedFolder.rows.length == 0) {
+		throw new Error("FOLDER_NOT_FOUND");
+	}
+	return deletedFolder.rows[0];
 };
 
 export const checkFolderDupe = async (
@@ -81,4 +88,13 @@ export const checkFolderDupe = async (
 	);
 	if (check.rows.length > 0) return true;
 	else false;
+};
+
+export const populate = async (username: string) => {
+	const id = await getUserId(username);
+	const folders = await client!.query(
+		"SELECT * FROM folders WHERE user_id = $1",
+		[id],
+	);
+	return folders.rows;
 };

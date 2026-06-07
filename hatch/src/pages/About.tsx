@@ -6,6 +6,7 @@ type file = {
 	id: string;
 	folder_id: string;
 };
+
 type folder = {
 	file: file;
 	folder_id: string;
@@ -22,7 +23,7 @@ export const About = () => {
 	const [folderName, setFolderName] = useState<string>("");
 	const [statusMessage, setStatusMessage] = useState<string>("");
 	const [file, setFile] = useState<File | null>(null);
-
+	console.log(fileData);
 	const authorizedUser = useAuth((state) => state.auth);
 
 	const getUserFiles = async () => {
@@ -50,7 +51,6 @@ export const About = () => {
 		const fileExt = fileName.slice(fileName.lastIndexOf("."));
 		const fileMime = Object.hasOwn(fileExtensionsToMime, fileExt);
 		const mimeType = getMimeType(fileExt as fileExtMime);
-		console.log("mimeType :", mimeType);
 		if (!fileMime) {
 			setStatusMessage("invalid file extension, example: .mp4");
 			setTimeout(() => setStatusMessage(""), 5000);
@@ -65,10 +65,10 @@ export const About = () => {
 		}
 		formData.append("folderName", filesFolderName);
 		formData.append("mimeType", mimeType);
+		console.log("filestatus: ", file);
 		if (file) {
 			formData.append("file", file);
 		}
-
 		const response = await fetch("http://localhost:3000/files", {
 			method: "POST",
 			credentials: "include",
@@ -76,13 +76,14 @@ export const About = () => {
 		});
 
 		const result = await response.json();
+		console.log(result.error);
 
 		setFileName("");
 		setFileFoldersName("");
 		if (response.ok) {
 			setFileData((prev) => [...prev, result.file]);
 		}
-		console.log("result.file from submit: ", result, result.file);
+		setStatusMessage(result.error);
 		return result;
 	};
 
@@ -97,7 +98,7 @@ export const About = () => {
 		});
 		const result = await response.json();
 		setFolderName("");
-		console.log("result.folde from submit: ", result.folder);
+		console.log("result from Foldersubmit: ", result);
 		if (response.ok) {
 			setFolderData((prev) => [...prev, result.folder]);
 		}
@@ -138,7 +139,7 @@ export const About = () => {
 			loadFiles();
 			loadFolders();
 		}
-	}, []);
+	}, [authorizedUser]);
 
 	return (
 		<>

@@ -3,12 +3,13 @@ import { useAuth } from "../store/authStore";
 export const Login = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
-
+	const [statusMessage, setStatusMessage] = useState("");
 	const setAuth = useAuth((state) => state.setAuth);
 
 	const handleSubmit = async (e: React.SubmitEvent) => {
 		e.preventDefault();
 		const data = { username, password };
+
 		const response = await fetch("http://localhost:3000/users/login", {
 			method: "POST",
 			credentials: "include",
@@ -18,6 +19,7 @@ export const Login = () => {
 			},
 			body: JSON.stringify(data),
 		});
+		console.log(response);
 		if (response.ok) {
 			setAuth(username);
 		}
@@ -25,6 +27,10 @@ export const Login = () => {
 		setPassword("");
 		const result = await response.json();
 		console.log(result);
+		setStatusMessage(result.error);
+		setTimeout(() => {
+			setStatusMessage("");
+		}, 5000);
 		return result;
 	};
 
@@ -46,6 +52,7 @@ export const Login = () => {
 				<button className="cursor-pointer bg-cyan-400" type="submit">
 					submit
 				</button>
+				<p>{statusMessage}</p>
 			</form>
 		</>
 	);
