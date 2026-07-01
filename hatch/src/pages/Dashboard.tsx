@@ -1,3 +1,1 @@
-export const Dashboard = () => {
-	return <p>im on the dashboard page!</p>;
-};
+export { Home as Dashboard } from "./Home";

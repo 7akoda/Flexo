@@ -21,7 +21,6 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
 	try {
 		const { username, password } = req.body;
-
 		const user = await getUser(username);
 		const passwordCheck = await bcrypt.compare(password, user.password_hash);
 

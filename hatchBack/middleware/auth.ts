@@ -14,7 +14,7 @@ export const auth = (req: Request, res: Response, next: () => void) => {
 
 	if (!token) {
 		return res.status(401).json({
-			success: false,
+			error: "Unauthorized",
 		});
 	}
 

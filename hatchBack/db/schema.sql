@@ -25,7 +25,7 @@ CREATE TABLE folders (
   user_id UUID NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(user_id),
   parent_folder_id UUID,
-  FOREIGN KEY (parent_folder_id) REFERENCES folders(folder_id),
+  FOREIGN KEY (parent_folder_id) REFERENCES folders(folder_id) ON DELETE CASCADE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOw(),
   CONSTRAINT unique_folder_identity UNIQUE NULLS NOT DISTINCT (user_id, parent_folder_id, folder_name)
 );

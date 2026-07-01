@@ -1,10 +1,13 @@
 import { client } from "../db/dbClient.ts";
-import { getUserId } from "./userService.ts";
+import { getUser, getUserId } from "./userService.ts";
 
-export const getFolderId = async (folder_name: string | null) => {
+export const getFolderId = async (
+	folder_name: string | null,
+	authorizedUser: string,
+) => {
 	if (!folder_name) return null;
-	const text = "SELECT * FROM folders WHERE folder_name = $1";
-	const value = [folder_name];
+	const text = "SELECT * FROM folders WHERE folder_name = $1 AND user_id = $2";
+	const value = [folder_name, authorizedUser];
 	const folder = await client!.query(text, value);
 	if (!folder.rows[0]?.folder_id) return null;
 	return folder.rows[0].folder_id;
@@ -16,7 +19,9 @@ export const createFolder = async (
 	parent_folder_name: string,
 ) => {
 	const id = await getUserId(username);
-	const parent_folder_id = await getFolderId(parent_folder_name);
+	const parent_folder_id = await getFolderId(parent_folder_name, id);
+	console.log("from create folder", parent_folder_id);
+
 	const text =
 		"INSERT INTO folders ( user_id, folder_name, parent_folder_id) VALUES ($1, $2, $3) RETURNING *";
 	const values = [id, folder_name, parent_folder_id];
@@ -49,22 +54,25 @@ export const deleteFolder = async (
 	parent_folder_name: string,
 ) => {
 	const id = await getUserId(username);
-	const folder_id = await getFolderId(folder_name);
-	const parent_folder_id = await getFolderId(parent_folder_name);
+	const folder_id = await getFolderId(folder_name, id);
+	const parent_folder_id = await getFolderId(parent_folder_name, id);
 	if (!parent_folder_id) {
 		const deletedFolder = await client!.query(
 			"DELETE FROM folders WHERE user_id = $1 AND folder_id = $2 RETURNING *",
 			[id, folder_id],
 		);
+		console.log("noparentid", deletedFolder);
+
 		if (deletedFolder.rows.length == 0) {
 			throw new Error("FOLDER_NOT_FOUND");
 		}
 		return deletedFolder.rows[0];
 	}
 	const deletedFolder = await client!.query(
-		"DELETE FROM folders WHERE parent_folder_id = $1 AND user_id = $2 AND folder_id = $3",
+		"DELETE FROM folders WHERE parent_folder_id = $1 AND user_id = $2 AND folder_id = $3 RETURNING *",
 		[parent_folder_id, id, folder_id],
 	);
+	console.log("parentid", deletedFolder);
 
 	if (deletedFolder.rows.length == 0) {
 		throw new Error("FOLDER_NOT_FOUND");
@@ -78,8 +86,8 @@ export const checkFolderDupe = async (
 	parent_folder_name: string,
 ) => {
 	const id = await getUserId(username);
-	const folder_id = await getFolderId(folder_name);
-	const parent_folder_id = await getFolderId(parent_folder_name);
+	const folder_id = await getFolderId(folder_name, id);
+	const parent_folder_id = await getFolderId(parent_folder_name, id);
 	if (folder_id == false) return false;
 
 	const check = await client!.query(
@@ -97,4 +105,19 @@ export const populate = async (username: string) => {
 		[id],
 	);
 	return folders.rows;
+};
+
+export const updateFolderService = async (
+	username: string,
+	folderName: string,
+	folderRename: string,
+	parent_folder_id: string,
+) => {
+	const id = await getUserId(username);
+	const folderChange = await client!.query(
+		"UPDATE folders SET folder_name = $1 WHERE folder_name = $2 AND user_id = $3 AND parent_folder_id = $4 returning *",
+		[folderRename, folderName, id, parent_folder_id],
+	);
+	console.log(folderChange.rows[0]);
+	return folderChange.rows[0];
 };

@@ -11,6 +11,9 @@ export const createUser = async (
 	hash: string,
 	avatar = null,
 ) => {
+	if (username.length === 0) {
+		throw new Error("USERNAME_NEEDED");
+	}
 	const text =
 		"INSERT INTO users (username, password_hash, avatar_url) VALUES ($1, $2, $3) RETURNING *";
 	const values = [username, hash, avatar];

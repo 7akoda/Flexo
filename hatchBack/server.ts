@@ -13,4 +13,4 @@ app.use(cookieParser());
 app.use("/users", userRouter);
 app.use("/files", fileRouter);
 app.use("/folders", folderRouter);
-app.listen(port, () => console.log("listening!"));
+app.listen(port, () => console.log("listening on port", port, "!"));

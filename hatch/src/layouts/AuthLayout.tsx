@@ -1,10 +1,11 @@
-import { Outlet } from "react-router";
+import { Navigate, Outlet } from "react-router";
+import { useAuth } from "../store/authStore";
 
 export const AuthLayout = () => {
-	return (
-		<>
-			<p>im in the authlayout! AND</p>
-			<Outlet />
-		</>
-	);
+	const authorizedUser = useAuth((state) => state.auth);
+	if (!authorizedUser) {
+		return <Navigate to="/auth/login" />;
+	}
+
+	return <Outlet />;
 };

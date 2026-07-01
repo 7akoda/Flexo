@@ -1,5 +1,98 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
+
+:root {
+	--font-sans: "Schibsted Grotesk", ui-sans-serif, system-ui, -apple-system,
+		BlinkMacSystemFont, "Segoe UI", sans-serif;
+	--font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+		Consolas, "Liberation Mono", "Courier New", monospace;
+	--color-bg: #f5efe6;
+	--color-panel: #fcfaf5;
+	--color-surface: #f1e9de;
+	--color-line: #d7ccbf;
+	--color-line-strong: #b8aa98;
+	--color-text: #181512;
+	--color-muted: #6a635c;
+	--color-muted-soft: #8a8177;
+	--color-accent-soft: #efe5d8;
+	--color-danger: #8d4d3f;
+	--color-danger-soft: #fbf1ed;
+	--color-success: #2d5b45;
+	--color-success-soft: #e7f0ea;
+	--color-warning: #8a3d35;
+	--color-warning-soft: #f6e8e5;
+	color: var(--color-text);
+	background: var(--color-bg);
+	font-family: var(--font-sans);
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	background: var(--color-bg);
+}
 
 body {
 	margin: 0;
+	min-height: 100vh;
+	background:
+		radial-gradient(circle at top left, rgba(255, 255, 255, 0.95), transparent 34%),
+		linear-gradient(180deg, #f7f1e8 0%, #f2ebe1 100%);
+	color: var(--color-text);
+	font-family: var(--font-sans);
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+	font: inherit;
+}
+
+button {
+	cursor: pointer;
+}
+
+input::placeholder,
+textarea::placeholder {
+	color: var(--color-muted-soft);
+}
+
+::selection {
+	background: var(--color-text);
+	color: #f8f4ed;
+}
+
+#root {
+	min-height: 100vh;
+}
+
+.editorial-display {
+	font-family: var(--font-sans);
+	font-weight: 600;
+	letter-spacing: -0.075em;
+	line-height: 0.9;
+}
+
+.editorial-title {
+	font-family: var(--font-sans);
+	font-weight: 600;
+	letter-spacing: -0.065em;
+	line-height: 0.94;
+}
+
+.editorial-copy {
+	font-size: 1.0625rem;
+	line-height: 1.85;
 }
