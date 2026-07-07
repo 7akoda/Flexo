@@ -9,13 +9,13 @@ export const brand = {
 	input:
 		"h-12 w-full border border-[var(--color-line)] bg-transparent px-4 text-base text-[var(--color-text)] outline-none transition placeholder:text-[var(--color-muted-soft)] focus:border-[var(--color-text)] focus:bg-[var(--color-panel)]",
 	button:
-		"inline-flex h-12 w-full items-center justify-center var(--color-text)] px-5 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[#f8f4ed] [font-family:var(--font-mono)] transition hover:bg-[#2b2623] disabled:cursor-not-allowed disabled:bg-[#b7afa4]",
+		"inline-flex h-12 w-full items-center justify-center var(--color-text)] px-5 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-button-text)] [font-family:var(--font-mono)] transition hover:bg-[var(--color-button-hover)]  disabled:cursor-not-allowed disabled:bg-[var(--color-button-disabled)]",
 	buttonInline:
-		"inline-flex h-12 items-center justify-center bg-[var(--color-text)] px-5 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[#f8f4ed] [font-family:var(--font-mono)] transition hover:bg-[#2b2623] disabled:cursor-not-allowed disabled:bg-[#b7afa4]",
+		"inline-flex h-12 items-center justify-center bg-[var(--color-text)] px-5 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-button-text)] [font-family:var(--font-mono)] transition hover:bg-[var(--color-button-hover)] disabled:cursor-not-allowed disabled:bg-[var(--color-button-disabled)]",
 	subtleButton:
-		"inline-flex items-center justify-center border border-[var(--color-line-strong)] bg-transparent px-4 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-text)] [font-family:var(--font-mono)] text-[#f8f4ed] transition hover:border-[var(--color-text)] hover:bg-[var(--color-panel)]",
+		"inline-flex items-center justify-center border border-[var(--color-line-strong)] bg-transparent px-4 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-text)] [font-family:var(--font-mono)] text-[var(--color-button-text)] transition hover:border-[var(--color-text)] hover:bg-[var(--color-panel)]",
 	dangerButton:
-		"inline-flex items-center justify-center border border-[#ddc5bc] bg-[var(--color-danger-soft)] px-4 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-danger)] [font-family:var(--font-mono)] transition hover:border-[var(--color-danger)] hover:bg-[#f7e4de]",
+		"inline-flex items-center justify-center border border-[var(--color-line-strong)] bg-[var(--color-danger-soft)] px-4 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-danger)] [font-family:var(--font-mono)] transition hover:border-[var(--color-danger)] hover:bg-[var(--color-hover-button-danger)]",
 	surface: "border border-[var(--color-line)] bg-[var(--color-surface)]",
 	accent: "text-[var(--color-text)]",
 	muted: "text-[var(--color-muted)]",
