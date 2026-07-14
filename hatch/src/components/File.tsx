@@ -28,10 +28,10 @@ export const File = ({ folder, fileData, setFileData }: fileProps) => {
 	const [fileName, setFileName] = useState("");
 	const files = fileData.filter((file) => file.folder_id === folder.folder_id);
 	const fileInputRef = useRef<HTMLInputElement>(null);
+
 	useEffect(() => {
 		if (update && fileInputRef.current) {
 			fileInputRef.current.focus();
-
 			fileInputRef.current.setSelectionRange(
 				0,
 				fileInputRef.current.value.lastIndexOf("."),
@@ -41,63 +41,65 @@ export const File = ({ folder, fileData, setFileData }: fileProps) => {
 
 	if (!files.length) return null;
 
-	console.log(fileName);
-
 	return (
 		<div className="space-y-2 pt-3" onClick={() => update && setUpdate(false)}>
 			{files.map((file) => (
 				<div
 					className={`${brand.surface} flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between`}
 					key={file.id}>
-					<div className="min-w-0  ">
+					<div className="min-w-0">
 						<p className={brand.kicker}>File</p>
-						<div className="flex flex-row ">
+						<div className="flex flex-row items-start gap-2">
 							{!update ? (
-								<p className="mt-1 truncate text-base font-medium tracking-[-0.02em] text-(--color-text)">
+								<p className="mt-1 truncate text-base font-medium tracking-[-0.02em] text-[var(--color-text)]">
 									{file.file_name}
 								</p>
 							) : (
-								<>
-									<form
-										className="flex"
-										onSubmit={(e) =>
-											handleFileUpdate(
-												e,
-												authorizedUser!,
-												file.file_name,
-												fileName +
-													file.file_name.slice(
-														file.file_name.lastIndexOf("."),
-														file.file_name.length,
-													),
-												folder.folder_name,
-												setFileData,
+								<form
+									className="flex items-center gap-2"
+									onClick={(e) => e.stopPropagation()}
+									onSubmit={(e) =>
+										handleFileUpdate(
+											e,
+											authorizedUser!,
+											file.file_name,
+											fileName +
+												file.file_name.slice(
+													file.file_name.lastIndexOf("."),
+													file.file_name.length,
+												),
+											folder.folder_name,
+											setFileData,
+										)
+									}>
+									<input
+										className={`${brand.input} h-10 min-w-48`}
+										ref={fileInputRef}
+										onFocus={() =>
+											setFileName(
+												file.file_name.slice(0, file.file_name.lastIndexOf(".")),
 											)
-										}>
-										<input
-											className="flex"
-											ref={fileInputRef}
-											onFocus={() =>
-												setFileName(
-													file.file_name.slice(0, fileName.lastIndexOf(".")),
-												)
-											}
-											onChange={(e) => setFileName(e.target.value)}
-											value={update ? fileName : file.file_name}
-										/>
-										<p>
-											{file.file_name.slice(
-												file.file_name.lastIndexOf("."),
-												file.file_name.length,
-											)}
-										</p>
-									</form>
-								</>
+										}
+										onChange={(e) => setFileName(e.target.value)}
+										value={update ? fileName : file.file_name}
+									/>
+									<p className="text-sm text-[var(--color-muted)]">
+										{file.file_name.slice(
+											file.file_name.lastIndexOf("."),
+											file.file_name.length,
+										)}
+									</p>
+								</form>
 							)}
 							{!update && (
 								<button
-									onClick={() => setUpdate((prev) => !prev)}
-									className="mt-2">
+									type="button"
+									onClick={(e) => {
+										e.stopPropagation();
+										setUpdate((prev) => !prev);
+										setFileName(file.file_name.slice(0, file.file_name.lastIndexOf(".")));
+									}}
+									className={`${brand.subtleButton} h-10 px-3`}>
 									<EditSvg />
 								</button>
 							)}
@@ -105,11 +107,13 @@ export const File = ({ folder, fileData, setFileData }: fileProps) => {
 					</div>
 					<div className="flex gap-2 sm:justify-end">
 						<button
+							type="button"
 							onClick={() => handleFileDownload(file.file_name)}
 							className={`${brand.subtleButton} h-10`}>
 							Download
 						</button>
 						<button
+							type="button"
 							onClick={() =>
 								handleFileDelete(file.file_name, folder.folder_id, setFileData)
 							}

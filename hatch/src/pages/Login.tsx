@@ -38,23 +38,22 @@ export const Login = () => {
 				<form
 					onSubmit={handleSubmit}
 					className={`${brand.panel} max-w-2xl space-y-8`}>
-					<div className="flex flex-col gap-4 border-b border-(--color-line) pb-6 sm:flex-row sm:items-start sm:justify-between">
+					<div className={brand.windowBar}>
+						<span>Log in</span>
+						<span>session.dll</span>
+					</div>
+					<div className="flex flex-col gap-4 border-b border-[var(--color-shadow)] pb-6 sm:flex-row sm:items-start sm:justify-between">
 						<BrandLockup subtitle="Welcome back" />
 						<div className="text-left sm:text-right">
 							<p className={brand.muted}>No account?</p>
 							<NavLink
-								className={`${brand.accent} text-lg transition-opacity hover:opacity-60`}
+								className={`${brand.accent} text-lg hover:underline`}
 								to="/auth/register">
 								Sign up
 							</NavLink>
 						</div>
 					</div>
-					<div className="space-y-3">
-						<h2 className="editorial-title text-6xl sm:text-7xl">Sign in</h2>
-						<p className={`editorial-copy max-w-md ${brand.muted}`}>
-							Pick up exactly where you left off.
-						</p>
-					</div>
+
 					<div className="space-y-3">
 						<input
 							name="email"
@@ -76,7 +75,7 @@ export const Login = () => {
 					<button className={brand.button} type="submit">
 						Log in
 					</button>
-					<p className="min-h-5 text-sm text-(--color-muted)">
+					<p className="min-h-5 text-sm text-[var(--color-muted)]">
 						{statusMessage}
 					</p>
 				</form>

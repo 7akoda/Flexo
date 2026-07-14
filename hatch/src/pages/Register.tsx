@@ -55,23 +55,22 @@ export const Register = () => {
 				<form
 					onSubmit={handleSubmit}
 					className={`${brand.panel} max-w-2xl space-y-8`}>
-					<div className="flex flex-col gap-4 border-b border-(--color-line) pb-6 sm:flex-row sm:items-start sm:justify-between">
+					<div className={brand.windowBar}>
+						<span>Sign up</span>
+						<span>new-user.inf</span>
+					</div>
+					<div className="flex flex-col gap-4 border-b border-[var(--color-shadow)] pb-6 sm:flex-row sm:items-start sm:justify-between">
 						<BrandLockup subtitle="Create account" />
 						<div className="text-left sm:text-right">
 							<p className={brand.muted}>Already registered?</p>
 							<NavLink
-								className={`${brand.accent} text-lg transition-opacity hover:opacity-60`}
+								className={`${brand.accent} text-lg hover:underline`}
 								to="/auth/login">
 								Sign in
 							</NavLink>
 						</div>
 					</div>
-					<div className="space-y-3">
-						<h2 className="editorial-title text-6xl sm:text-7xl">Sign up</h2>
-						<p className={`editorial-copy max-w-lg ${brand.muted}`}>
-							Set up your workspace in a few seconds.
-						</p>
-					</div>
+
 					<div className="space-y-3">
 						<input
 							name="email"
@@ -104,7 +103,7 @@ export const Register = () => {
 							return (
 								<span
 									key={key}
-									className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${ok ? brand.tag.on : brand.tag.off}`}>
+									className={`inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium transition-colors ${ok ? brand.tag.on : brand.tag.off}`}>
 									{ok ? "✓" : "✗"} {label}
 								</span>
 							);
@@ -116,7 +115,7 @@ export const Register = () => {
 						type="submit">
 						Sign up
 					</button>
-					<p className="min-h-5 text-sm text-(--color-muted)">
+					<p className="min-h-5 text-sm text-[var(--color-muted)]">
 						{statusMessage}
 					</p>
 				</form>

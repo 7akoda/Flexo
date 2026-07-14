@@ -8,12 +8,10 @@ export const BrandLockup = ({
 	title?: string;
 }) => (
 	<div className="flex items-center gap-4">
-		<div className="grid size-14 place-items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] text-3xl text-[var(--color-text)]">
-			{brand.logo}
-		</div>
+		<div className={`${brand.iconBox} size-14 text-3xl`}>{brand.logo}</div>
 		<div>
 			{subtitle && <p className={brand.kicker}>{subtitle}</p>}
-			<h1 className="text-3xl font-semibold tracking-[-0.06em] text-[var(--color-text)] sm:text-4xl">
+			<h1 className="text-3xl font-semibold tracking-[-0.05em] text-[var(--color-text)] sm:text-4xl">
 				{title}
 			</h1>
 		</div>

@@ -8,8 +8,6 @@ import {
 import { brand } from "../lib/brand";
 import { useAuth } from "../store/authStore";
 import { File as Files, type file } from "./File";
-import { DownChevron } from "../assets/svg/DownChevron";
-import { SideChevron } from "../assets/svg/SideChevron";
 import { EditSvg } from "../assets/svg/Edit";
 
 export type folder = {
@@ -63,6 +61,7 @@ export const Folder = ({
 		(sfolder) => folder.folder_id === sfolder.parent_folder_id,
 	);
 	const filePromptOpen = fileFocus === folder.folder_name;
+
 	useEffect(() => {
 		if (update) folderInputRef.current?.focus();
 		if (filePromptOpen) fileNameInputRef.current?.focus();
@@ -87,6 +86,7 @@ export const Folder = ({
 		);
 		setFileFocus("");
 	};
+
 	return (
 		<div
 			onClick={() => update && setUpdate(false)}
@@ -104,24 +104,31 @@ export const Folder = ({
 				setFileFocus(folder.folder_name);
 				setOpen(true);
 			}}
-			className={`flex flex-col gap-4  border p-4 transition sm:p-5 ${
-				root
-					? "border-(--color-text) bg-(--color-surface)"
-					: "border-(--color-line) bg-(--color-panel)"
+			className={`win98-panel flex flex-col gap-4 p-4 transition sm:p-5 ${
+				root ? "bg-[var(--color-surface)]" : "bg-[var(--color-panel)]"
 			} ${child ? "ml-5" : ""}`}>
 			<div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-				{!root && (
-					<div className="flex flex-row">
+				{root ? (
+					<div>
+						<p className={brand.kicker}>Root directory</p>
+						<p className="mt-1 text-xl font-semibold tracking-[-0.04em] text-[var(--color-text)]">
+							{folder.folder_name}
+						</p>
+					</div>
+				) : (
+					<div className="flex flex-row items-start gap-2">
 						<button
 							type="button"
-							onClick={() => !root && setOpen((prev) => !prev)}
+							onClick={() => setOpen((prev) => !prev)}
 							className="flex items-center gap-3 text-left">
-							<span className="grid size-10 shrink-0 place-items-center  border border-(--color-line) bg-(--color-surface) text-lg text-(--color-text)">
-								{open ? <DownChevron /> : <SideChevron />}
+							<span
+								className={`${brand.iconBox} size-10 text-[var(--color-text)]`}>
+								{open ? "–" : "+"}
 							</span>
 							<span>
 								{update ? (
 									<form
+										onClick={(e) => e.stopPropagation()}
 										onSubmit={(e) =>
 											handleFolderUpdate(
 												e,
@@ -136,19 +143,26 @@ export const Folder = ({
 										}>
 										<input
 											ref={folderInputRef}
+											className={`${brand.input} h-10 min-w-48`}
 											onChange={(e) => setFolderRename(e.target.value)}
 											value={folderRename}
 										/>
 									</form>
 								) : (
-									<p className="text-lg font-medium tracking-[-0.03em] text-(--color-text)">
+									<p className="text-lg font-medium tracking-[-0.03em] text-[var(--color-text)]">
 										{folder.folder_name}
 									</p>
 								)}
 							</span>
-						</button>{" "}
+						</button>
 						{!update && (
-							<button onClick={() => setUpdate((prev) => !prev)} className="">
+							<button
+								type="button"
+								onClick={(e) => {
+									e.stopPropagation();
+									setUpdate((prev) => !prev);
+								}}
+								className={`${brand.editButton} h-5 w-5 self-center`}>
 								<EditSvg />
 							</button>
 						)}
@@ -156,6 +170,7 @@ export const Folder = ({
 				)}
 				{!root && (
 					<button
+						type="button"
 						onClick={() =>
 							handleFolderDelete(
 								folder.folder_name,
@@ -163,7 +178,6 @@ export const Folder = ({
 								folder.parent_folder_id,
 							)
 						}
-						style={{ fontSize: "0.7rem" }}
 						className={`${brand.dangerButton} h-10`}>
 						Delete
 					</button>
@@ -190,16 +204,13 @@ export const Folder = ({
 						className={`${brand.input} text-base`}
 					/>
 					<button
-						disabled={folderName.length == 0 ? true : false}
+						disabled={folderName.length === 0}
 						type="submit"
-						style={{ fontSize: "0.7rem" }}
 						className={`${brand.buttonInline} h-12 px-4`}>
 						Add folder
 					</button>
 				</form>
-				<label
-					style={{ fontSize: "0.7rem" }}
-					className={`${brand.subtleButton} h-12 cursor-pointer px-4`}>
+				<label className={`${brand.subtleButton} h-12 cursor-pointer px-4`}>
 					Choose file
 					<input
 						name="file"
@@ -217,13 +228,16 @@ export const Folder = ({
 			</div>
 
 			{file && (
-				<div className="border border-(--color-line) bg-(--color-surface) px-4 py-3 text-sm text-(--color-muted)">
-					Selected: <span className="text-(--color-text)">{file.name}</span>
+				<div className={brand.note}>
+					Selected:{" "}
+					<span className="text-[var(--color-text)]">{file.name}</span>
 				</div>
 			)}
 
 			{filePromptOpen && (
-				<form onSubmit={uploadFile} className="flex flex-col gap-2 sm:flex-row">
+				<form
+					onSubmit={uploadFile}
+					className="flex flex-col gap-2 sm:flex-row sm:items-center">
 					<input
 						ref={fileNameInputRef}
 						name={folder.folder_name}
@@ -232,7 +246,7 @@ export const Folder = ({
 						onChange={(e) => setFileName(e.target.value)}
 						value={fileName}
 					/>
-					<p className="flex self-center">
+					<p className="px-2 text-sm text-[var(--color-muted)]">
 						{file &&
 							"." +
 								file.name.slice(
@@ -250,7 +264,7 @@ export const Folder = ({
 
 			{(root || open) && (
 				<div
-					className={`space-y-3 ${root ? null : "border-l border-(--color-line) pl-4"}`}>
+					className={`space-y-3 ${root ? "" : "border-l border-[var(--color-shadow)] pl-4"}`}>
 					{children}
 					{child &&
 						subfolders.map((sfolder, index: number) => (
@@ -266,7 +280,8 @@ export const Folder = ({
 								setFolderData={setFolderData}
 								setStatusMessage={setStatusMessage}
 								key={sfolder.folder_id}
-								child={true}></Folder>
+								child={true}
+							/>
 						))}
 					<Files
 						setFileData={setFileData}

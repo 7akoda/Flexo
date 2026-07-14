@@ -38,7 +38,6 @@ export const Workspace = () => {
 		};
 		loadWorkspace();
 	}, [authorizedUser]);
-	console.log(folderData);
 
 	const rootData = folderData.filter((folder) => folder.folder_name === "Root");
 	const rootFolderId = rootData[0]?.folder_id;
@@ -48,35 +47,35 @@ export const Workspace = () => {
 	);
 
 	return (
-		<div className="mx-auto flex w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+		<div className="mx-auto flex w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
 			<section className={`${brand.panel} flex-1`}>
-				<div className="mb-8 grid gap-6 border-b border-(--color-line) pb-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+				<div className={brand.windowBar}>
+					<span>Explorer</span>
+					<span>{authorizedUser}</span>
+				</div>
+				<div className="mb-8 grid gap-6 border-b border-[var(--color-shadow)] pb-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
 					<div className="grid gap-3 sm:grid-cols-3">
 						<div className={`${brand.surface} px-4 py-4`}>
 							<p className={brand.kicker}>Folders</p>
-							<p className="mt-2 text-3xl font-semibold tracking-[-0.06em] text-(--color-text)">
+							<p className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-[var(--color-text)]">
 								{Math.max(folderData.length - 1, 0)}
 							</p>
 						</div>
 						<div className={`${brand.surface} px-4 py-4`}>
 							<p className={brand.kicker}>Files</p>
-							<p className="mt-2 text-3xl font-semibold tracking-[-0.06em] text-(--color-text)">
+							<p className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-[var(--color-text)]">
 								{fileData.length}
 							</p>
 						</div>
 						<div className={`${brand.surface} min-w-52 px-4 py-4`}>
 							<p className={brand.kicker}>Signed in</p>
-							<p className="mt-2 truncate text-base font-medium text-(--color-text)">
+							<p className="mt-2 truncate text-base font-medium text-[var(--color-text)]">
 								{authorizedUser}
 							</p>
 						</div>
 					</div>
 				</div>
-				{statusMessage && (
-					<p className="mb-6  border border-(--color-line) bg-(--color-surface) px-4 py-3 text-sm text-(--color-text)">
-						{statusMessage}
-					</p>
-				)}
+				{statusMessage && <p className={`mb-6 ${brand.note}`}>{statusMessage}</p>}
 				<div className="space-y-3">
 					{rootData.length ? (
 						rootData.map((folder) => (
@@ -112,7 +111,7 @@ export const Workspace = () => {
 							</Folder>
 						))
 					) : (
-						<div className=" border border-dashed border-(--color-line) bg-(--color-panel) px-4 py-12 text-center text-(--color-muted)">
+						<div className="win98-inset px-4 py-12 text-center text-[var(--color-muted)]">
 							Your workspace is getting ready.
 						</div>
 					)}

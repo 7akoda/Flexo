@@ -1,28 +1,32 @@
 export const brand = {
-	app: "FLΣXO",
+	app: "Flexo",
 	logo: "▽",
-	page: "min-h-[calc(100svh-5rem)] bg-[var(--color-bg)] text-[var(--color-text)]",
+	page: "min-h-[calc(100svh-10rem)] bg-transparent text-[var(--color-text)]",
 	center:
-		"mx-auto flex w-full max-w-6xl items-center justify-center px-4 py-8 sm:px-6 sm:py-10 lg:px-8",
-	panel:
-		"w-full  border border-[var(--color-line)] bg-[var(--color-panel)] p-6 shadow-[0_20px_60px_rgba(24,21,18,0.05)] sm:p-8 lg:p-10",
+		"mx-auto flex w-full max-w-6xl items-center justify-center px-4 py-6 sm:px-6 sm:py-8 lg:px-8",
+	panel: "win98-panel w-full p-6 sm:p-8 lg:p-10",
+	windowBar: "win98-titlebar -m-6 mb-6 sm:-m-8 sm:mb-8 lg:-m-10 lg:mb-10",
 	input:
-		"h-12 w-full border border-[var(--color-line)] bg-transparent px-4 text-base text-[var(--color-text)] outline-none transition placeholder:text-[var(--color-muted-soft)] focus:border-[var(--color-text)] focus:bg-[var(--color-panel)]",
+		"win98-inset h-12 w-full bg-[var(--color-surface-soft)] px-4 text-base text-[var(--color-text)] outline-none placeholder:text-[var(--color-muted-soft)]",
 	button:
-		"inline-flex h-12 w-full items-center justify-center var(--color-text)] px-5 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-button-text)] [font-family:var(--font-mono)] transition hover:bg-[var(--color-button-hover)]  disabled:cursor-not-allowed disabled:bg-[var(--color-button-disabled)]",
+		"win98-button win98-button--primary inline-flex h-12 w-full items-center justify-center px-5 text-[0.72rem] font-semibold uppercase tracking-[0.16em] [font-family:var(--font-mono)]",
 	buttonInline:
-		"inline-flex h-12 items-center justify-center bg-[var(--color-text)] px-5 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-button-text)] [font-family:var(--font-mono)] transition hover:bg-[var(--color-button-hover)] disabled:cursor-not-allowed disabled:bg-[var(--color-button-disabled)]",
+		"win98-button win98-button--primary inline-flex h-12 items-center justify-center px-5 text-[0.72rem] font-semibold uppercase tracking-[0.16em] [font-family:var(--font-mono)]",
 	subtleButton:
-		"inline-flex items-center justify-center border border-[var(--color-line-strong)] bg-transparent px-4 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-text)] [font-family:var(--font-mono)] text-[var(--color-button-text)] transition hover:border-[var(--color-text)] hover:bg-[var(--color-panel)]",
+		"win98-button inline-flex items-center justify-center px-4 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-text)] [font-family:var(--font-mono)]",
+	editButton:
+		"win98-button inline-flex items-center justify-center text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-text)] [font-family:var(--font-mono)]",
 	dangerButton:
-		"inline-flex items-center justify-center border border-[var(--color-line-strong)] bg-[var(--color-danger-soft)] px-4 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[var(--color-danger)] [font-family:var(--font-mono)] transition hover:border-[var(--color-danger)] hover:bg-[var(--color-hover-button-danger)]",
-	surface: "border border-[var(--color-line)] bg-[var(--color-surface)]",
-	accent: "text-[var(--color-text)]",
+		"win98-button win98-button--danger inline-flex items-center justify-center px-4 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-danger)] [font-family:var(--font-mono)]",
+	surface: "win98-inset bg-[var(--color-surface-soft)]",
+	accent: "text-[var(--color-accent)]",
 	muted: "text-[var(--color-muted)]",
 	kicker:
-		"text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted-soft)] [font-family:var(--font-mono)]",
+		"text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[var(--color-accent)] [font-family:var(--font-mono)]",
+	iconBox: "win98-panel grid place-items-center text-[var(--color-text)]",
+	note: "win98-inset px-4 py-3 text-sm text-[var(--color-muted)]",
 	tag: {
-		on: "border border-[var(--color-success)] bg-[var(--color-success-soft)] text-[var(--color-success)]",
-		off: "border border-[var(--color-warning)] bg-[var(--color-warning-soft)] text-[var(--color-warning)]",
+		on: "win98-inset bg-[var(--color-success-soft)] text-[var(--color-success)]",
+		off: "win98-inset bg-[var(--color-warning-soft)] text-[var(--color-warning)]",
 	},
 };
