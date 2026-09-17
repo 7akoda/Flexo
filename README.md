@@ -1,8 +1,6 @@
 # Flexo
 
-Flexo is a small file manager built around a simple idea: make personal file storage feel more like moving things around on a desktop than filling out forms.
-
-You sign in, land in a workspace, create folders, drop files where they belong, and download them again later. The UI leans into an old-school desktop look, but the stack underneath is current React on the frontend and an Express API on the backend.
+Flexo is a simple file manager.
 
 ## What it does
 
